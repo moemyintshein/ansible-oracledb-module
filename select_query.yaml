@@ -1,0 +1,16 @@
+---
+- name: Run query against Oracle DB using custom module
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run SELECT query for DUMMY_TABLE
+      oracle_query:
+        user: "{{ user }}"
+        password: "{{ password }}"
+        dsn: "{{ db_url }}"
+        query: "SELECT COLUMN1, COLUMN2 FROM DUMMY_TABLE"
+      register: result
+
+    - name: Show query results formatted as CSV
+      debug:
+        msg: "{{ result.rows | map('join', ', ') | list }}"
